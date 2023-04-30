@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { CREATE_POT, GET_ALL_POTS, GET_ONE_POT } from "../config/ConfigURL";
+import {CREATE_POT, GET_ALL_POTS, GET_ONE_POT} from '../config/ConfigURL';
 
 export async function getAllPots() {
   try {

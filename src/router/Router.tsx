@@ -3,17 +3,21 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import HomeTemplates from '../templates/HomeTemplates';
 import CreatePotTemplate from '../templates/CreatePotTemplate';
-import {TERTIARY_COLOR} from '../assets/colors';
-import DetailsPotTemplate from "../templates/DetailsPotTemplate";
-import CreateCapteurTemplate from "../templates/CreateCapteurTemplate";
+import {BACKGROUND_COLOR, TERTIARY_COLOR} from '../assets/colors';
+import DetailsPotTemplate from '../templates/DetailsPotTemplate';
+import CreateCapteurTemplate from '../templates/CreateCapteurTemplate';
+import DetailsCapteurTemplate from '../templates/DetailsCapteurTemplate';
+import {StatusBar} from 'react-native';
 
 const Stack = createNativeStackNavigator();
 const Router = () => {
   return (
     <NavigationContainer>
+      <StatusBar backgroundColor={BACKGROUND_COLOR} />
       <Stack.Navigator
         initialRouteName={'Home'}
         screenOptions={{
+          animation: 'slide_from_right',
           headerTransparent: true,
           headerTitleStyle: {
             color: TERTIARY_COLOR,
@@ -47,6 +51,13 @@ const Router = () => {
           component={CreateCapteurTemplate}
           options={{
             headerTitle: 'Créer un capteur',
+          }}
+        />
+        <Stack.Screen
+          name="DetailsCapteur"
+          component={DetailsCapteurTemplate}
+          options={{
+            headerTitle: 'Détails du capteur',
           }}
         />
       </Stack.Navigator>

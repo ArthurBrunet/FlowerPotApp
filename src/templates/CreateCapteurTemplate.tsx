@@ -57,6 +57,7 @@ const CreateCapteurTemplate = ({route, navigation}: any) => {
             value={value}
           />
         </View>
+        <ButtonDatePickerCustom onPress={() => setOpen(true)} date={date} />
         <ButtonCustom
           style={styles.btnSubmit}
           onPress={submit}

@@ -84,9 +84,10 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   header: {
+    overflow: 'hidden',
     paddingBottom: 20,
     backgroundColor: BACKGROUND_COLOR,
-    marginTop: 40,
+    paddingTop: 80,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -94,6 +95,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.3,
     shadowRadius: 5,
+    elevation: 10,
     zIndex: 1,
   },
   list: {},

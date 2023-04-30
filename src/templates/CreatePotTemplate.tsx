@@ -57,7 +57,11 @@ const CreatePotTemplate = ({navigation}: any) => {
           />
           <ButtonDatePickerCustom onPress={() => setOpen(true)} date={date} />
         </View>
-        <ButtonCustom style={styles.btnSubmit} onPress={submit} text={'Créer'} />
+        <ButtonCustom
+          style={styles.btnSubmit}
+          onPress={submit}
+          text={'Créer'}
+        />
         <DatePicker
           modal
           open={open}

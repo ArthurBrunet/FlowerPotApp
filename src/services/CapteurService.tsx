@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { CREATE_CAPTEUR, GET_ALL_CAPTEUR } from "../config/ConfigURL";
+import {CREATE_CAPTEUR, GET_ALL_CAPTEUR} from '../config/ConfigURL';
 export async function getAllCapteur(id: string) {
   try {
     const options = {
@@ -20,7 +20,8 @@ export async function createCapteur(
     typeCapteur: string;
     valeur: string;
     dateCapteur: string;
-}) {
+  },
+) {
   try {
     const options = {
       headers: {

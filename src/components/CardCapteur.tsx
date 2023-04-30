@@ -1,7 +1,6 @@
 import React, {PropsWithChildren, useEffect, useState} from 'react';
-import {Animated, StyleSheet, TouchableOpacity, View} from 'react-native';
+import {Animated, StyleSheet, TouchableWithoutFeedback} from 'react-native';
 import Text = Animated.Text;
-import Pot from '../models/Pot';
 import moment from 'moment';
 import {Card} from '@rneui/base';
 import {CardDivider} from '@rneui/base/dist/Card/Card.Divider';
@@ -13,20 +12,55 @@ type CardCapteurProps = PropsWithChildren<{
   navigation: any;
 }>;
 const CardCapteur = ({capteur, index, navigation}: CardCapteurProps) => {
-  const [lastCapteur] = useState(capteur.valeurs[capteur.valeurs.length - 1]);
+  const animatedValue = new Animated.Value(0);
+  const buttonScale = animatedValue.interpolate({
+    inputRange: [0, 0.5, 1],
+    outputRange: [1, 1.05, 1.1],
+  });
+  const onPressIn = () => {
+    Animated.spring(animatedValue, {
+      toValue: 1,
+      bounciness: 15,
+      useNativeDriver: true,
+    }).start();
+  };
+  const onPressOut = () => {
+    Animated.spring(animatedValue, {
+      toValue: 0,
+      bounciness: 15,
+      useNativeDriver: true,
+    }).start();
+  };
+  const animatedScaleStyle = {
+    transform: [{scale: buttonScale}],
+  };
+  const [lastCapteur, setLastCapteur] = useState(
+    capteur.valeurs[capteur.valeurs.length - 1],
+  );
+  useEffect(() => {
+    setLastCapteur(capteur.valeurs[capteur.valeurs.length - 1]);
+  }, [capteur]);
+  let marginTop = index === 0 ? 40 : 20;
   return (
-    <View style={styles.container} key={index}>
-      <Card containerStyle={styles.containerCard}>
-        <Text style={styles.title} numberOfLines={1}>
-          {capteur.type}
-        </Text>
-        <CardDivider />
-        <Text style={styles.value}>{lastCapteur.valeur}</Text>
-        <Text style={styles.date}>
-          Mise à jour {moment(lastCapteur.date).fromNow()}
-        </Text>
-      </Card>
-    </View>
+    <TouchableWithoutFeedback
+      onPressIn={onPressIn}
+      onPressOut={onPressOut}
+      onPress={() => navigation.navigate('DetailsCapteur', {capteur})}
+      key={index}>
+      <Animated.View
+        style={[styles.container, {marginTop}, animatedScaleStyle]}>
+        <Card containerStyle={styles.containerCard}>
+          <Text style={styles.title} numberOfLines={1}>
+            {capteur.type}
+          </Text>
+          <CardDivider />
+          <Text style={styles.value}>{lastCapteur.valeur}</Text>
+          <Text style={styles.date}>
+            Mise à jour {moment(lastCapteur.date).fromNow()}
+          </Text>
+        </Card>
+      </Animated.View>
+    </TouchableWithoutFeedback>
   );
 };
 

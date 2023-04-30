@@ -1,5 +1,5 @@
 import React, {PropsWithChildren} from 'react';
-import {StyleSheet, TouchableOpacity} from 'react-native';
+import {Animated, StyleSheet, TouchableWithoutFeedback} from 'react-native';
 import {Icon} from '@rneui/base';
 import {PRIMARY_COLOR, TERTIARY_COLOR} from '../assets/colors';
 type ButtonDatePickerCustomProps = PropsWithChildren<{
@@ -14,10 +14,37 @@ const ButtonIconCustom = ({
   size,
   style,
 }: ButtonDatePickerCustomProps) => {
+  const animatedValue = new Animated.Value(0);
+  const buttonScale = animatedValue.interpolate({
+    inputRange: [0, 0.5, 1],
+    outputRange: [1, 1.05, 1.1],
+  });
+  const onPressIn = () => {
+    Animated.spring(animatedValue, {
+      toValue: 1,
+      bounciness: 15,
+      useNativeDriver: true,
+    }).start();
+  };
+  const onPressOut = () => {
+    Animated.spring(animatedValue, {
+      toValue: 0,
+      bounciness: 15,
+      useNativeDriver: true,
+    }).start();
+  };
+  const animatedScaleStyle = {
+    transform: [{scale: buttonScale}],
+  };
   return (
-    <TouchableOpacity onPress={onPress} style={[styles.container,style]}>
-      <Icon name={nameIcon} color={TERTIARY_COLOR} size={size} />
-    </TouchableOpacity>
+    <TouchableWithoutFeedback
+      onPressIn={onPressIn}
+      onPressOut={onPressOut}
+      onPress={onPress}>
+      <Animated.View style={[styles.container, style, animatedScaleStyle]}>
+        <Icon name={nameIcon} color={TERTIARY_COLOR} size={size} />
+      </Animated.View>
+    </TouchableWithoutFeedback>
   );
 };
 const styles = StyleSheet.create({

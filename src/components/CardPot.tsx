@@ -1,5 +1,11 @@
-import React, {PropsWithChildren, useEffect, useState} from 'react';
-import {Animated, StyleSheet, TouchableOpacity, View} from 'react-native';
+import React, {PropsWithChildren} from 'react';
+import {
+  Animated,
+  Easing,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  View,
+} from 'react-native';
 import Text = Animated.Text;
 import Pot from '../models/Pot';
 import moment from 'moment';
@@ -12,34 +18,60 @@ type CardPotProps = PropsWithChildren<{
   navigation: any;
 }>;
 const CardPot = ({pot, index, navigation}: CardPotProps) => {
+  const animatedValue = new Animated.Value(0);
+  const buttonScale = animatedValue.interpolate({
+    inputRange: [0, 0.5, 1],
+    outputRange: [1, 1.05, 1.1],
+  });
+  const onPressIn = () => {
+    Animated.spring(animatedValue, {
+      toValue: 1,
+      bounciness: 15,
+      useNativeDriver: true,
+    }).start();
+  };
+  const onPressOut = () => {
+    Animated.spring(animatedValue, {
+      toValue: 0,
+      bounciness: 15,
+      useNativeDriver: true,
+    }).start();
+  };
+  const animatedScaleStyle = {
+    transform: [{scale: buttonScale}],
+  };
   let datePlantation = moment(pot.datePlantation);
   let marginTop = index === 0 ? 80 : 40;
   return (
-    <TouchableOpacity
-      style={[styles.container, {marginTop}]}
+    <TouchableWithoutFeedback
+      onPressIn={onPressIn}
+      onPressOut={onPressOut}
       onPress={() => navigation.navigate('Details', {pot})}
       key={index}>
-      <Card containerStyle={styles.containerCard}>
-        <Text style={styles.title} numberOfLines={1}>
-          {pot.nom}
-        </Text>
-        <CardDivider />
-        <View style={styles.row}>
-          <Text style={styles.label}>La plante : </Text>
-          <Text style={styles.value}>{pot.plante}</Text>
-        </View>
-        <View style={styles.row}>
-          <Text style={styles.label}>Date de plantation : </Text>
-          <Text style={styles.value}>
-            {datePlantation.format('DD/MM/YYYY')}
+      <Animated.View
+        style={[animatedScaleStyle, styles.container, {marginTop}]}>
+        <Card containerStyle={styles.containerCard}>
+          <Text style={styles.title} numberOfLines={1}>
+            {pot.nom}
           </Text>
-        </View>
-        <View style={styles.row}>
-          <Text style={styles.label}>Nombre de capteurs : </Text>
-          <Text style={styles.value}>{pot.capteurs.length}</Text>
-        </View>
-      </Card>
-    </TouchableOpacity>
+          <CardDivider />
+          <View style={styles.row}>
+            <Text style={styles.label}>La plante : </Text>
+            <Text style={styles.value}>{pot.plante}</Text>
+          </View>
+          <View style={styles.row}>
+            <Text style={styles.label}>Date de plantation : </Text>
+            <Text style={styles.value}>
+              {datePlantation.format('DD/MM/YYYY')}
+            </Text>
+          </View>
+          <View style={styles.row}>
+            <Text style={styles.label}>Nombre de capteurs : </Text>
+            <Text style={styles.value}>{pot.capteurs.length}</Text>
+          </View>
+        </Card>
+      </Animated.View>
+    </TouchableWithoutFeedback>
   );
 };
 
@@ -47,6 +79,14 @@ const styles = StyleSheet.create({
   container: {
     alignSelf: 'center',
     marginVertical: 40,
+    borderRadius: 10,
+  },
+  containerCard: {
+    margin: 0,
+    maxWidth: 350,
+    borderRadius: 10,
+    borderWidth: 0,
+    backgroundColor: PRIMARY_COLOR,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -55,13 +95,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.5,
     shadowRadius: 10,
     elevation: 10,
-  },
-  containerCard: {
-    margin: 0,
-    maxWidth: 350,
-    borderRadius: 10,
-    borderWidth: 0,
-    backgroundColor: PRIMARY_COLOR,
   },
   title: {
     color: TERTIARY_COLOR,
