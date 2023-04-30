@@ -1,21 +1,23 @@
 import Capteur from './Capteur';
-import moment, {Moment} from 'moment';
 
 export default class Pot {
-  nom: String;
-  plante: String;
-  datePlantation: Moment;
+  _id: string;
+  nom: string;
+  plante: string;
+  datePlantation: string;
   capteurs: Capteur[];
 
   constructor(
-    nom: String,
-    plante: String,
+    _id: string,
+    nom: string,
+    plante: string,
     datePlantation: string,
     capteurs: Capteur[],
   ) {
+    this._id = _id;
     this.nom = nom;
     this.plante = plante;
-    this.datePlantation = moment(datePlantation);
+    this.datePlantation = datePlantation;
     this.capteurs = capteurs;
   }
 }

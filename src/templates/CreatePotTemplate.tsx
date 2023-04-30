@@ -13,7 +13,7 @@ const CreatePotTemplate = ({navigation}: any) => {
   const [nameError, setNameError] = useState<string | null>(null);
   const [plant, setPlant] = useState<string | null>(null);
   const [plantError, setPlantError] = useState<string | null>(null);
-  const [date, setDate] = useState<Date | null>(new Date());
+  const [date, setDate] = useState<Date>(new Date());
   const [open, setOpen] = useState<boolean>(false);
 
   const submit = async () => {
@@ -40,22 +40,24 @@ const CreatePotTemplate = ({navigation}: any) => {
   return (
     <Background>
       <View style={styles.container}>
-        <InputCustom
-          label={'Nom'}
-          error={nameError}
-          placeholder={'Nom du pot'}
-          onChangeText={r => setName(r)}
-          value={name}
-        />
-        <InputCustom
-          label={'Plante'}
-          error={plantError}
-          placeholder={'Rose, Tulipe, ...'}
-          onChangeText={r => setPlant(r)}
-          value={plant}
-        />
-        <ButtonDatePickerCustom onPress={() => setOpen(true)} date={date} />
-        <ButtonCustom style={{marginTop: 40}} onPress={submit} text={'Créer'} />
+        <View style={styles.inputBox}>
+          <InputCustom
+            label={'Nom'}
+            error={nameError}
+            placeholder={'Nom du pot'}
+            onChangeText={r => setName(r)}
+            value={name}
+          />
+          <InputCustom
+            label={'Plante'}
+            error={plantError}
+            placeholder={'Rose, Tulipe, ...'}
+            onChangeText={r => setPlant(r)}
+            value={plant}
+          />
+          <ButtonDatePickerCustom onPress={() => setOpen(true)} date={date} />
+        </View>
+        <ButtonCustom style={styles.btnSubmit} onPress={submit} text={'Créer'} />
         <DatePicker
           modal
           open={open}
@@ -80,6 +82,14 @@ const styles = StyleSheet.create({
     height: '100%',
     marginTop: '20%',
     alignItems: 'center',
+  },
+  inputBox: {
+    width: '100%',
+    maxWidth: 300,
+  },
+  btnSubmit: {
+    marginTop: 50,
+    width: 350,
   },
 });
 

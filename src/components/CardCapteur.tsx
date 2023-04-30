@@ -6,47 +6,35 @@ import moment from 'moment';
 import {Card} from '@rneui/base';
 import {CardDivider} from '@rneui/base/dist/Card/Card.Divider';
 import {PRIMARY_COLOR, SECONDARY_COLOR, TERTIARY_COLOR} from '../assets/colors';
-type CardPotProps = PropsWithChildren<{
-  pot: Pot;
+import Capteur from '../models/Capteur';
+type CardCapteurProps = PropsWithChildren<{
+  capteur: Capteur;
   index: any;
   navigation: any;
 }>;
-const CardPot = ({pot, index, navigation}: CardPotProps) => {
-  let datePlantation = moment(pot.datePlantation);
-  let marginTop = index === 0 ? 80 : 40;
+const CardCapteur = ({capteur, index, navigation}: CardCapteurProps) => {
+  const [lastCapteur] = useState(capteur.valeurs[capteur.valeurs.length - 1]);
   return (
-    <TouchableOpacity
-      style={[styles.container, {marginTop}]}
-      onPress={() => navigation.navigate('Details', {pot})}
-      key={index}>
+    <View style={styles.container} key={index}>
       <Card containerStyle={styles.containerCard}>
         <Text style={styles.title} numberOfLines={1}>
-          {pot.nom}
+          {capteur.type}
         </Text>
         <CardDivider />
-        <View style={styles.row}>
-          <Text style={styles.label}>La plante : </Text>
-          <Text style={styles.value}>{pot.plante}</Text>
-        </View>
-        <View style={styles.row}>
-          <Text style={styles.label}>Date de plantation : </Text>
-          <Text style={styles.value}>
-            {datePlantation.format('DD/MM/YYYY')}
-          </Text>
-        </View>
-        <View style={styles.row}>
-          <Text style={styles.label}>Nombre de capteurs : </Text>
-          <Text style={styles.value}>{pot.capteurs.length}</Text>
-        </View>
+        <Text style={styles.value}>{lastCapteur.valeur}</Text>
+        <Text style={styles.date}>
+          Mise à jour {moment(lastCapteur.date).fromNow()}
+        </Text>
       </Card>
-    </TouchableOpacity>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     alignSelf: 'center',
-    marginVertical: 40,
+    marginVertical: 20,
+    width: '90%',
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -54,7 +42,7 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.5,
     shadowRadius: 10,
-    elevation: 10,
+    elevation: 1,
   },
   containerCard: {
     margin: 0,
@@ -79,16 +67,19 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     marginVertical: 5,
   },
-  label: {
-    color: SECONDARY_COLOR,
-    fontWeight: 'bold',
-    fontSize: 15,
-  },
   value: {
     color: TERTIARY_COLOR,
     fontWeight: 'bold',
-    fontSize: 18,
+    textAlign: 'center',
+    fontSize: 25,
+    marginBottom: 10,
+  },
+  date: {
+    color: SECONDARY_COLOR,
+    fontWeight: 'bold',
+    textAlign: 'right',
+    fontSize: 12,
   },
 });
 
-export default CardPot;
+export default CardCapteur;

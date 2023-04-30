@@ -9,7 +9,8 @@ const ButtonDatePickerCustom = ({
   onPress,
   date,
 }: ButtonDatePickerCustomProps) => {
-  let dateString = moment(date?.toString()).locale('fr').fromNow();
+  let momentDate = moment(date?.toISOString());
+  let dateString = momentDate.fromNow();
   return (
     <View style={styles.container}>
       <Text style={styles.label}>Date de plantation</Text>
@@ -24,7 +25,8 @@ const ButtonDatePickerCustom = ({
 };
 const styles = StyleSheet.create({
   container: {
-    width: 280,
+    width: '100%',
+    paddingHorizontal: 10,
   },
   label: {
     fontSize: 16,

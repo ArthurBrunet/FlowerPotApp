@@ -25,7 +25,6 @@ const InputCustom = ({
       value={value}
       errorMessage={error}
       style={styles.input}
-      containerStyle={styles.containerStyle}
       inputContainerStyle={styles.inputContainerStyle}
       inputStyle={styles.inputStyle}
       errorStyle={styles.errorStyle}
@@ -38,9 +37,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#5e5e5e',
     paddingHorizontal: 20,
     borderRadius: 5,
-  },
-  containerStyle: {
-    width: 300,
   },
   labelStyle: {
     color: '#ececec',
