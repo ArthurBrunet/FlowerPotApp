@@ -1,12 +1,12 @@
 import React, {useState} from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import Background from '../components/Background';
 import InputCustom from '../components/InputCustom';
 import DatePicker from 'react-native-date-picker';
-import {Button} from '@rneui/base';
 import ButtonDatePickerCustom from '../components/ButtonDatePickerCustom';
 import ButtonCustom from '../components/ButtonCustom';
 import {createPot} from '../services/PotService';
+import SearchPlant from "../components/SearchPlant";
 
 const CreatePotTemplate = ({navigation}: any) => {
   const [name, setName] = useState<string | null>(null);
@@ -33,7 +33,10 @@ const CreatePotTemplate = ({navigation}: any) => {
         plante: plant,
         datePlantation: date.toISOString(),
       }).then(() => {
-        navigation.navigate('Home');
+        navigation.reset({
+            index: 0,
+            routes: [{name: 'Home'}],
+        });
       });
     }
   };
@@ -48,13 +51,17 @@ const CreatePotTemplate = ({navigation}: any) => {
             onChangeText={r => setName(r)}
             value={name}
           />
-          <InputCustom
-            label={'Plante'}
-            error={plantError}
-            placeholder={'Rose, Tulipe, ...'}
-            onChangeText={r => setPlant(r)}
-            value={plant}
-          />
+          <View style={styles.row}>
+            <InputCustom
+              label={'Plante'}
+              error={plantError}
+              style={{width: '75%'}}
+              placeholder={'Rose, Tulipe, ...'}
+              onChangeText={r => setPlant(r)}
+              value={plant}
+            />
+            <SearchPlant setPlant={setPlant} />
+          </View>
           <ButtonDatePickerCustom onPress={() => setOpen(true)} date={date} />
         </View>
         <ButtonCustom
@@ -94,6 +101,11 @@ const styles = StyleSheet.create({
   btnSubmit: {
     marginTop: 50,
     width: 350,
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
 });
 

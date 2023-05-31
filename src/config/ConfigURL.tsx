@@ -1,4 +1,5 @@
-const BASEURL = 'http://192.168.0.124:3000';
+const BASEURL = 'http://45.147.99.116:3000';
+export const URL_ML = 'http://45.147.99.116:8000/predict';
 
 export const GET_ALL_POTS = `${BASEURL}/pots`;
 export const CREATE_POT = `${BASEURL}/pots`;

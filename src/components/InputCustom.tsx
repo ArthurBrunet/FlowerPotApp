@@ -5,6 +5,7 @@ import {StyleSheet} from 'react-native';
 type InputCustomProps = PropsWithChildren<{
   label: String | null;
   value: String | null;
+  style: any;
   error: String | null;
   placeholder: String | null;
   onChangeText: (text: string) => void;
@@ -13,6 +14,7 @@ const InputCustom = ({
   label,
   value = null,
   error = null,
+  style = null,
   placeholder,
   onChangeText,
 }: InputCustomProps) => {
@@ -26,6 +28,7 @@ const InputCustom = ({
       errorMessage={error}
       style={styles.input}
       inputContainerStyle={styles.inputContainerStyle}
+      containerStyle={style}
       inputStyle={styles.inputStyle}
       errorStyle={styles.errorStyle}
     />

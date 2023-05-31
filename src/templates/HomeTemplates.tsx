@@ -8,10 +8,12 @@ import {
   FlatList,
   RefreshControl,
   StyleSheet,
+  View,
 } from 'react-native';
 import CardPot from '../components/CardPot';
 import {PRIMARY_COLOR, TERTIARY_COLOR} from '../assets/colors';
 import {Text} from '@rneui/base';
+import SearchPlant from '../components/SearchPlant';
 
 const HomeTemplates = ({navigation}: any) => {
   const [pots, setPots] = React.useState<Pot[]>([]);
@@ -29,6 +31,9 @@ const HomeTemplates = ({navigation}: any) => {
   };
   return (
     <Background>
+      <View style={styles.btn}>
+        <SearchPlant />
+      </View>
       <FlatList
         data={pots}
         renderItem={item => (
@@ -65,6 +70,12 @@ const styles = StyleSheet.create({
     textAlignVertical: 'center',
     marginTop: 80,
     flex: 1,
+  },
+  btn: {
+    position: 'absolute',
+    top: 20,
+    right: 10,
+    zIndex: 1,
   },
 });
 
