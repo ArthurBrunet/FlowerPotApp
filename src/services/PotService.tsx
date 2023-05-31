@@ -1,5 +1,10 @@
 import axios from 'axios';
-import {CREATE_POT, GET_ALL_POTS, GET_ONE_POT} from '../config/ConfigURL';
+import {
+  CREATE_POT,
+  DELETE_POT,
+  GET_ALL_POTS,
+  GET_ONE_POT,
+} from '../config/ConfigURL';
 
 export async function getAllPots() {
   try {
@@ -42,6 +47,21 @@ export async function createPot(data: {
       },
     };
     let res = await axios.post(CREATE_POT, data, options);
+    return res.data;
+  } catch (e) {
+    throw handler(e);
+  }
+}
+
+export async function deletePot(id: string) {
+  try {
+    const options = {
+      headers: {
+        'Content-Type': 'application/json;charset=UTF-8',
+        'Access-Control-Allow-Origin': '*',
+      },
+    };
+    let res = await axios.delete(DELETE_POT(id), options);
     return res.data;
   } catch (e) {
     throw handler(e);

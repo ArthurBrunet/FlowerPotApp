@@ -8,6 +8,7 @@ import DetailsPotTemplate from '../templates/DetailsPotTemplate';
 import CreateCapteurTemplate from '../templates/CreateCapteurTemplate';
 import DetailsCapteurTemplate from '../templates/DetailsCapteurTemplate';
 import {StatusBar} from 'react-native';
+import ButtonDeletePot from '../components/ButtonDeletePot';
 
 const Stack = createNativeStackNavigator();
 const Router = () => {
@@ -42,9 +43,12 @@ const Router = () => {
         <Stack.Screen
           name="Details"
           component={DetailsPotTemplate}
-          options={{
+          options={({route, navigation}) => ({
             headerTitle: 'Détails du pot',
-          }}
+            headerRight: () => {
+              return <ButtonDeletePot id={route.params?.pot._id} navigation={navigation} />;
+            },
+          })}
         />
         <Stack.Screen
           name="CreateCapteur"

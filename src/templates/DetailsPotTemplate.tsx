@@ -11,6 +11,7 @@ import moment from 'moment/moment';
 import CardCapteur from '../components/CardCapteur';
 import ButtonIconCustom from '../components/ButtonIconCustom';
 import {getAllCapteur} from '../services/CapteurService';
+import ButtonDeletePot from '../components/ButtonDeletePot';
 
 const DetailsPotTemplate = ({route, navigation}: any) => {
   const [pot] = useState<Pot>(route.params.pot);
@@ -105,6 +106,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginHorizontal: 10,
     marginVertical: 5,
+  },
+  btnRemove: {
+    position: 'absolute',
+    top: 60,
+    right: 20,
   },
   label: {
     color: SECONDARY_COLOR,

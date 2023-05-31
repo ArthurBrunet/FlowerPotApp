@@ -2,10 +2,12 @@ import React, {useState} from 'react';
 import {Icon, Text} from '@rneui/base';
 import {PRIMARY_COLOR, SECONDARY_COLOR, TERTIARY_COLOR} from '../assets/colors';
 import {
+  Animated,
   Dimensions,
   Modal,
   StyleSheet,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   View,
 } from 'react-native';
 import {launchCamera} from 'react-native-image-picker';
@@ -16,7 +18,30 @@ const SearchPlant = ({setPlant = null}: any) => {
   const [plant, setPlantTemp] = useState<string | null>(null);
   const [pourcentage, setPourcentage] = useState<number | null>(null);
   const [open, setOpen] = useState<boolean>(false);
+  const animatedValue = new Animated.Value(0);
 
+  const buttonScale = animatedValue.interpolate({
+    inputRange: [0, 0.5, 1],
+    outputRange: [1, 1.05, 1.1],
+  });
+  const onPressIn = () => {
+    Animated.spring(animatedValue, {
+      toValue: 1,
+      bounciness: 15,
+      useNativeDriver: true,
+    }).start();
+  };
+  const onPressOut = () => {
+    Animated.spring(animatedValue, {
+      toValue: 0,
+      bounciness: 15,
+      useNativeDriver: true,
+    }).start();
+  };
+
+  const animatedScaleStyle = {
+    transform: [{scale: buttonScale}],
+  };
   const takePicture = async () => {
     launchCamera({}, async r => {
       try {
@@ -38,9 +63,14 @@ const SearchPlant = ({setPlant = null}: any) => {
   };
   return (
     <>
-      <TouchableOpacity style={styles.cameraBtn} onPress={takePicture}>
-        <Icon name={'photo-camera'} size={30} color={TERTIARY_COLOR} />
-      </TouchableOpacity>
+      <TouchableWithoutFeedback
+        onPressIn={onPressIn}
+        onPressOut={onPressOut}
+        onPress={takePicture}>
+        <Animated.View style={[animatedScaleStyle, styles.cameraBtn]}>
+          <Icon name={'photo-camera'} size={30} color={TERTIARY_COLOR} />
+        </Animated.View>
+      </TouchableWithoutFeedback>
       {open && plant && pourcentage && (
         <Modal
           transparent={true}
@@ -70,13 +100,13 @@ const SearchPlant = ({setPlant = null}: any) => {
                   />
                 </View>
               ) : (
-                  <ButtonCustom
-                      style={styles.btnOk}
-                      onPress={() => {
-                        setOpen(false);
-                      }}
-                      text={'Ok'}
-                  />
+                <ButtonCustom
+                  style={styles.btnOk}
+                  onPress={() => {
+                    setOpen(false);
+                  }}
+                  text={'Ok'}
+                />
               )}
             </View>
           </View>
@@ -141,7 +171,7 @@ const styles = StyleSheet.create({
     height: 50,
     alignSelf: 'center',
     marginBottom: 20,
-  }
+  },
 });
 
 export default SearchPlant;
